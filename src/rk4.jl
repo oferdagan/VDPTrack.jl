@@ -1,9 +1,9 @@
-function rk4step(p::VDPTagMDP, pos::Vec2)
+function rk4step(p::VDPTrackMDP, pos::Vec2, obj)
     h = p.dt
-    k1 = vdp_dynamics(p.mu, pos)
-    k2 = vdp_dynamics(p.mu, pos+h/2*k1)
-    k3 = vdp_dynamics(p.mu, pos+h/2*k2)
-    k4 = vdp_dynamics(p.mu, pos+h*k3)
+    k1 = vdp_dynamics(p.mu[obj], pos)
+    k2 = vdp_dynamics(p.mu[obj], pos+h/2*k1)
+    k3 = vdp_dynamics(p.mu[obj], pos+h/2*k2)
+    k4 = vdp_dynamics(p.mu[obj], pos+h*k3)
     return pos + h/6*(k1+2*k2+2*k3+k4)
 end
 

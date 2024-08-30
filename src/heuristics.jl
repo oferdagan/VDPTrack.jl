@@ -1,51 +1,51 @@
 struct ToNextML{RNG<:AbstractRNG} <: Policy
-    p::VDPTagMDP
+    p::VDPTrackMDP
     rng::RNG
 end
 
-ToNextML(p::VDPTagProblem; rng=Random.GLOBAL_RNG) = ToNextML(mdp(p), rng)
+ToNextML(p::VDPTrackProblem; rng=Random.GLOBAL_RNG) = ToNextML(mdp(p), rng)
 
-function POMDPs.action(p::ToNextML, s::TagState)
+function POMDPs.action(p::ToNextML, s::TrackState)
     next = next_ml_target(p.p, s.target)
     diff = next-s.agent
     return atan(diff[2], diff[1])
 end
 
-POMDPs.action(p::ToNextML, b::ParticleCollection{TagState}) = TagAction(false, POMDPs.action(p, rand(p.rng, b)))
+POMDPs.action(p::ToNextML, b::ParticleCollection{TrackState}) = TrackAction(false, POMDPs.action(p, rand(p.rng, b)))
 
 struct ToNextMLSolver <: Solver
     rng::AbstractRNG
 end
 
-POMDPs.solve(s::ToNextMLSolver, p::VDPTagProblem) = ToNextML(mdp(p), s.rng)
-function POMDPs.solve(s::ToNextMLSolver, dp::DiscreteVDPTagProblem)
+POMDPs.solve(s::ToNextMLSolver, p::VDPTrackProblem) = ToNextML(mdp(p), s.rng)
+function POMDPs.solve(s::ToNextMLSolver, dp::DiscreteVDPTrackProblem)
     cp = cproblem(dp)
     return translate_policy(ToNextML(mdp(cp), s.rng), cp, dp, dp)
 end
 
 
 struct ManageUncertainty <: Policy
-    p::VDPTagPOMDP
+    p::VDPTrackPOMDP
     max_norm_std::Float64
 end
 
-function POMDPs.action(p::ManageUncertainty, b::ParticleCollection{TagState})
+function POMDPs.action(p::ManageUncertainty, b::ParticleCollection{TrackState})
     agent = first(particles(b)).agent
     target_particles = Array{Float64}(undef, 2, n_particles(b))
     for (i, s) in enumerate(particles(b))
         target_particles[:,i] = s.target
     end
     normal_dist = fit(MvNormal, target_particles)
-    angle = POMDPs.action(ToNextML(mdp(p.p)), TagState(agent, mean(normal_dist)))
-    return TagAction(sqrt(det(cov(normal_dist))) > p.max_norm_std, angle)
+    angle = POMDPs.action(ToNextML(mdp(p.p)), TrackState(agent, mean(normal_dist)))
+    return TrackAction(sqrt(det(cov(normal_dist))) > p.max_norm_std, angle)
 end
 
 mutable struct NextMLFirst{RNG<:AbstractRNG}
-    p::VDPTagMDP
+    p::VDPTrackMDP
     rng::RNG
 end
 
-function next_action(gen::NextMLFirst, mdp::Union{POMDP, MDP}, s::TagState, snode)
+function next_action(gen::NextMLFirst, mdp::Union{POMDP, MDP}, s::TrackState, snode)
     if n_children(snode) < 1
         return POMDPs.action(ToNextML(gen.p, gen.rng), s)
     else
@@ -55,7 +55,7 @@ end
 
 function next_action(gen::NextMLFirst, pomdp::Union{POMDP, MDP}, b, onode)
     s = rand(gen.rng, b)
-    ca = TagAction(false, next_action(gen, pomdp, s, onode))
+    ca = TrackAction(false, next_action(gen, pomdp, s, onode))
     return convert_a(actiontype(pomdp), ca, pomdp)
 end
 
