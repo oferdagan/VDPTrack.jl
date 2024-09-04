@@ -40,8 +40,9 @@ export
     DiscretizedPolicy,
     ManageUncertainty,
     # CardinalBarriers,
-    mdp
-    isterminal
+    mdp,
+    isterminal,
+    next_ml_target
 
 struct TrackState
     target::Vector{Vec2}
