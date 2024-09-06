@@ -61,22 +61,22 @@ const TrackAction = CartesianIndex{1}
 # end
 
 @with_kw struct VDPTrackMDP <: MDP{TrackState, Float64}
-    mu::Vector{Float64}     = [1.5, 2.0, 0.5]
-    dt::Float64             = 0.1
+    mu::Vector{Float64}     = [2.0, 2.0, 2.0]
+    dt::Float64             = 0.05
     step_size::Float64      = 0.1
-    pos_std::Float64        = 0.00005
+    pos_std::Float64        = 0.05
     track_terminate::Bool   = true
-    maxTimeSteps::Int64     = 50
+    maxTimeSteps::Int64     = 100
     discount::Float64       = 0.95
 end
 
 @with_kw struct VDPTrackPOMDP <: POMDP{TrackState, TrackAction, TrackObs}
     mdp::VDPTrackMDP            = VDPTrackMDP()
     # meas_cost::Float64          = 5.0
-    active_meas_std::Float64    = 0.05
-    p_detect::Vector{Float64}   = [0.7, 0.6, 0.9] #[1, 1, 1]    # Probability of detection
+    active_meas_std::Float64    = 0.5
+    p_detect::Vector{Float64}   = [1, 1, 1]    # [0.7, 0.6, 0.9] Probability of detection
     N_obj::Int64                = 3
-    meas_std::Float64           = 0.05
+    meas_std::Float64           = 2
 end
 
 const VDPTrackProblem = Union{VDPTrackMDP,VDPTrackPOMDP}
@@ -170,13 +170,19 @@ function POMDPs.pdf(d::BeamDist,   o::TrackObs)
     p = 1.0
     for i in 1:length(o.obs)
         if i == d.abeam
-            p *= POMDPs.pdf(d.an, o.obs[i])
+            if o.detect
+                p *= POMDPs.pdf(d.an_detect, o.obs[i])
+                p *= POMDPs.pdf(d.p_detect, o.detect)
+            else
+                p *= POMDPs.pdf(d.an, o.obs[i])
+            end
+            
         else
             p *= POMDPs.pdf(d.n, o.obs[i])
         end
     end
 
-    p *= POMDPs.pdf(d.p_detect, o.detect)
+    
     return p
 end
 
@@ -202,7 +208,7 @@ function POMDPs.observation(p::VDPTrackPOMDP, a::TrackAction, sp::TrackState)
     an = Normal(dist, p.meas_std)
     p_detect = Bernoulli(p.p_detect[a])
     
-    n = Normal(1.0, p.meas_std)
+    n = Normal(dist, p.meas_std)
 
     BeamDist(abeam, an_detect, an, n, p_detect)
 end
