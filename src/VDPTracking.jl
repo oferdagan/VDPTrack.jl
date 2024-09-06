@@ -66,7 +66,7 @@ const TrackAction = CartesianIndex{1}
     step_size::Float64      = 0.1
     pos_std::Float64        = 0.05
     track_terminate::Bool   = true
-    maxTimeSteps::Int64     = 100
+    maxTimeSteps::Int64     = 75
     discount::Float64       = 0.95
 end
 
