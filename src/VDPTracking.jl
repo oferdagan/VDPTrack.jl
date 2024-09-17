@@ -74,7 +74,7 @@ end
     mdp::VDPTrackMDP            = VDPTrackMDP()
     # meas_cost::Float64          = 5.0
     active_meas_std::Float64    = 0.5
-    p_detect::Vector{Float64}   = [1, 1, 1]    # [0.7, 0.6, 0.9] Probability of detection
+    p_detect::Vector{Float64}   = [0.9, 0.8, 0.65]  #[1, 1, 1]    # [0.7, 0.6, 0.9] Probability of detection
     N_obj::Int64                = 3
     meas_std::Float64           = 2
 end
