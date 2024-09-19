@@ -61,7 +61,7 @@ const TrackAction = CartesianIndex{1}
 # end
 
 @with_kw struct VDPTrackMDP <: MDP{TrackState, Float64}
-    mu::Vector{Float64}     = [2.0, 2.0, 2.0]
+    mu::Vector{Float64}     = [0.6, 2.0, 1.4]
     dt::Float64             = 0.05
     step_size::Float64      = 0.1
     pos_std::Float64        = 0.05
@@ -74,7 +74,7 @@ end
     mdp::VDPTrackMDP            = VDPTrackMDP()
     # meas_cost::Float64          = 5.0
     active_meas_std::Float64    = 0.5
-    p_detect::Vector{Float64}   = [0.9, 0.8, 0.65]  #[1, 1, 1]    # [0.7, 0.6, 0.9] Probability of detection
+    p_detect::Vector{Float64}   = [0.95, 0.8, 0.65]  #[1, 1, 1]    # [0.7, 0.6, 0.9] Probability of detection
     N_obj::Int64                = 3
     meas_std::Float64           = 2
 end
@@ -116,7 +116,7 @@ function POMDPs.reward(pp::VDPTrackProblem, s::TrackState, a::TrackAction, sp::T
     if s.t == p.maxTimeSteps
         return 0.0
     else
-        return o.detect*d/2
+        return o.detect*d
     end
     
 end
