@@ -37,7 +37,7 @@ end
 
 pomdp = VDPTrackPOMDP()
 
-n_p=300
+n_p=1000
 # s0 = rand(initialstate(pomdp))
 
 # a = action(planner, s0)
@@ -46,8 +46,7 @@ n_p=300
 Random.seed!(1000)
 
 # solver = POMCPOWSolver(criterion=MaxUCB(100.0), tree_queries=1_000, estimate_value = RolloutEstimator(rolloutPolicy(pomdp)))
-solver = POMCPOWSolver(criterion=MaxUCB(20.0), tree_queries=1_000, k_action = 28, k_observation = 28, max_depth = 30 )
-
+solver = POMCPOWSolver(criterion=MaxUCB(20.0), tree_queries=1_000, k_action = 28, k_observation = 28, max_depth = 30, estimate_value = RolloutEstimator(rolloutPolicy(pomdp)))
 
 
 planner = solve(solver, pomdp)
@@ -68,7 +67,7 @@ randomPlanner = RandomPolicy(pomdp)
 # end
 r_random = []
 r_pomcpow = []
-Nsim = 10
+Nsim = 100
 
 for n=1:Nsim
     hist = simulate(hr, pomdp, planner, up)

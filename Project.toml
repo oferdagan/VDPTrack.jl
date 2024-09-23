@@ -1,4 +1,4 @@
-name = "VDPTracking"
+name = "VDPTrack"
 uuid = "4b8f232b-5051-448b-9489-a46ebd6d4f15"
 authors = ["oferdagan <ofer.dagan@colorado.edu>"]
 version = "0.1.0"

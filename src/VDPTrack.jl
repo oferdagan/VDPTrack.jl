@@ -1,4 +1,4 @@
-module VDPTracking
+module VDPTrack
 
 # package code goes here
 using POMDPs
