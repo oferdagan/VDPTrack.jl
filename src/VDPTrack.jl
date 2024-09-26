@@ -26,6 +26,7 @@ export
     TrackAction,
     VDPTrackMDP,
     VDPTrackPOMDP,
+    VDPTrackProblem,
     Vec2,
 
     
