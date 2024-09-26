@@ -124,7 +124,6 @@ end
 
 POMDPs.discount(pp::VDPTrackProblem) = mdp(pp).discount
 isterminal(pp::VDPTrackProblem, s::TrackState) = mdp(pp).track_terminate && s.t == mdp(pp).maxTimeSteps
-isterminal(pp::VDPTrackPOMDP, s::TrackState) = mdp(pp).track_terminate && s.t == mdp(pp).maxTimeSteps
 
 
 function POMDPs.actions(::VDPTrackPOMDP) 
