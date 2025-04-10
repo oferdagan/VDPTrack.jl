@@ -14,7 +14,7 @@ using LinearAlgebra
 using MCTS
 using Distributions
 
-using VDPTracking
+using VDPTrack
 
 mutable struct rolloutPolicy{P<:Union{POMDP,MDP}, U<:Updater} <: Policy
     p::P
@@ -37,7 +37,7 @@ end
 
 pomdp = VDPTrackPOMDP()
 
-n_p=1000
+n_p=300
 # s0 = rand(initialstate(pomdp))
 
 # a = action(planner, s0)
@@ -46,7 +46,18 @@ n_p=1000
 Random.seed!(1000)
 
 # solver = POMCPOWSolver(criterion=MaxUCB(100.0), tree_queries=1_000, estimate_value = RolloutEstimator(rolloutPolicy(pomdp)))
-solver = POMCPOWSolver(criterion=MaxUCB(20.0), tree_queries=1_000, k_action = 28, k_observation = 28, max_depth = 30, estimate_value = RolloutEstimator(rolloutPolicy(pomdp)))
+solver = POMCPOWSolver(criterion=MaxUCB(20.0), tree_queries=500, k_action = 28, k_observation = 28, max_depth = 30)
+
+
+# solver = MCTS.DPWSolver(n_iterations=500,
+                        # depth=30,
+                        # exploration_constant=20.0,
+                        # max_time=Inf,
+                        # k_action = 28.0,
+                        # alpha_action = 1/25,
+                        # k_state = 28.0,
+                        # alpha_state = 1/85
+                        # )
 
 
 planner = solve(solver, pomdp)
@@ -67,7 +78,7 @@ randomPlanner = RandomPolicy(pomdp)
 # end
 r_random = []
 r_pomcpow = []
-Nsim = 100
+Nsim = 50
 
 for n=1:Nsim
     hist = simulate(hr, pomdp, planner, up)

@@ -176,6 +176,7 @@ function POMDPs.pdf(d::BeamDist,   o::TrackObs)
                 p *= POMDPs.pdf(d.p_detect, o.detect)
             else
                 p *= POMDPs.pdf(d.an, o.obs[i])
+                p *= POMDPs.pdf(d.p_detect, o.detect)
             end
             
         else
