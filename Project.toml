@@ -20,8 +20,6 @@ Reel = "71555da5-176e-5e73-a222-aebc6c6e4f2f"
 Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 
-[compat]
-POMDPs = "0.9"
 
 [extras]
 ProgressMeter = "92933f4c-e287-5a05-a399-4b506db050ca"
