@@ -3,12 +3,10 @@ uuid = "4b8f232b-5051-448b-9489-a46ebd6d4f15"
 authors = ["oferdagan <ofer.dagan@colorado.edu>"]
 version = "0.1.0"
 
-
 [deps]
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 MCTS = "e12ccd36-dcad-5f33-8774-9175229e7b33"
-POMCPOW = "4c53ee00-974c-466f-8fa5-8dd73959bbab"
 POMDPModels = "355abbd5-f08e-5560-ac9e-8b5f2592a0ca"
 POMDPTools = "7588e00f-9cae-40de-98dc-e0c70c48cdd7"
 POMDPs = "a93abf59-7444-517b-a68a-c42f96afdd7d"
@@ -19,7 +17,6 @@ Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 Reel = "71555da5-176e-5e73-a222-aebc6c6e4f2f"
 Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
-
 
 [extras]
 ProgressMeter = "92933f4c-e287-5a05-a399-4b506db050ca"

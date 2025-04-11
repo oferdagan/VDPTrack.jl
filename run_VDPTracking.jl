@@ -4,7 +4,7 @@ Pkg.activate(".")
 
 
 using POMDPs
-using POMCPOW
+# using POMCPOW
 using POMDPModels
 using POMDPTools
 using Random
@@ -46,18 +46,18 @@ n_p=300
 Random.seed!(1000)
 
 # solver = POMCPOWSolver(criterion=MaxUCB(100.0), tree_queries=1_000, estimate_value = RolloutEstimator(rolloutPolicy(pomdp)))
-solver = POMCPOWSolver(criterion=MaxUCB(20.0), tree_queries=500, k_action = 28, k_observation = 28, max_depth = 30)
+# solver = POMCPOWSolver(criterion=MaxUCB(20.0), tree_queries=500, k_action = 28, k_observation = 28, max_depth = 30)
 
 
-# solver = MCTS.DPWSolver(n_iterations=500,
-                        # depth=30,
-                        # exploration_constant=20.0,
-                        # max_time=Inf,
-                        # k_action = 28.0,
-                        # alpha_action = 1/25,
-                        # k_state = 28.0,
-                        # alpha_state = 1/85
-                        # )
+solver = MCTS.DPWSolver(n_iterations=500,
+                        depth=30,
+                        exploration_constant=20.0,
+                        max_time=Inf,
+                        k_action = 28.0,
+                        alpha_action = 1/25,
+                        k_state = 28.0,
+                        alpha_state = 1/85
+                        )
 
 
 planner = solve(solver, pomdp)
